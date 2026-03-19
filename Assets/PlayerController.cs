@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 /// プレイヤーの操作を制御するクラス
 /// Playerスプライトにアタッチして使用
 /// </summary>
+
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerController : MonoBehaviour
@@ -100,10 +101,12 @@ public class PlayerController : MonoBehaviour
             // 左右キーで移動
             if (Keyboard.current.leftArrowKey.isPressed)
             {
+                Debug.Log("Left");
                 horizontal = -1f;
             }
             else if (Keyboard.current.rightArrowKey.isPressed)
             {
+                Debug.Log("Right");
                 horizontal = 1f;
             }
         }
