@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+// using System.Diagnostics
 
 /// <summary>
 /// プレイヤーの操作を制御するクラス
