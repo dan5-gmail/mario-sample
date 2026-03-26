@@ -102,12 +102,12 @@ public class PlayerController : MonoBehaviour
             // 左右キーで移動
             if (Keyboard.current.leftArrowKey.isPressed)
             {
-                Debug.Log("Left");
+                // Debug.Log("Left");
                 horizontal = -1f;
             }
             else if (Keyboard.current.rightArrowKey.isPressed)
             {
-                Debug.Log("Right");
+                // Debug.Log("Right");
                 horizontal = 1f;
             }
         }
@@ -130,7 +130,6 @@ public class PlayerController : MonoBehaviour
         // 上キーでジャンプ（接地時のみ）
         if (Keyboard.current != null && Keyboard.current.upArrowKey.wasPressedThisFrame && isGrounded)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
     }
 
