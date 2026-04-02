@@ -130,6 +130,7 @@ public class PlayerController : MonoBehaviour
         // 上キーでジャンプ（接地時のみ）
         if (Keyboard.current != null && Keyboard.current.upArrowKey.wasPressedThisFrame && isGrounded)
         {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
     }
 
