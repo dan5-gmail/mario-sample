@@ -51,10 +51,10 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // ゲームプレイ中のみ操作可能
-        if (GameManager.Instance != null && GameManager.Instance.CurrentState != GameManager.GameState.Playing)
-        {
-            return;
-        }
+        // if (GameManager.Instance != null && GameManager.Instance.CurrentState != GameManager.GameState.Playing)
+        // {
+        // return;
+        // }
 
         // 接地判定
         CheckGround();

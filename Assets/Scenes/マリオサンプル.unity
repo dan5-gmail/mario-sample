@@ -567,7 +567,7 @@ MonoBehaviour:
   groundCheckRadius: 0.2
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   fallThreshold: -10
 --- !u!50 &1206713739
 Rigidbody2D:
