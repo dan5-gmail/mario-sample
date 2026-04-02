@@ -1,4 +1,5 @@
 using UnityEngine;
+// using System.Security.Cryptography;
 
 /// <summary>
 /// 敵の動作を制御するクラス
@@ -102,7 +103,7 @@ public class EnemyController : MonoBehaviour
     }
 
     /// <summary>
-    /// 壁を検知したら反転する
+    /// 壁を検知したら反転
     /// </summary>
     private void CheckWall()
     {
@@ -152,6 +153,7 @@ public class EnemyController : MonoBehaviour
         // 壁検知レイ表示
         Gizmos.color = Color.red;
         Vector3 wallCheckPos = wallCheck != null ? wallCheck.position : transform.position;
+
         float dir = Application.isPlaying ? currentDirection : (moveRight ? 1f : -1f);
         Gizmos.DrawRay(wallCheckPos, Vector3.right * dir * wallCheckDistance);
     }
