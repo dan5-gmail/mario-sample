@@ -139,7 +139,7 @@ public class StageBuilder : MonoBehaviour
                 {
                     case 1:
                         Gizmos.color = Color.gray;
-                        Gizmos.DrawWireCube(position, Vector3.one * blockSize * 0.9f);
+                        Gizmos.DrawWireCube(position, Vector3.one * blockSize * 1.0f);
                         break;
 
                     case 2:

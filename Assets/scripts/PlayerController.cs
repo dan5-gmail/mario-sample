@@ -69,23 +69,64 @@ public class PlayerController : MonoBehaviour
         CheckFall();
     }
 
-    /// <summary>
-    /// 接地判定を行う
-    /// </summary>
+    // / <summary>
+    // / 接地判定を行う
+    // / </summary>
+    // private void CheckGround()
+    // {
+    //     if (groundCheck != null)
+    //     {
+    //         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+    //     }
+    //     else
+    //     {
+    //         // groundCheckが設定されていない場合は、自身の下方向でチェック
+    //         isGrounded = Physics2D.OverlapCircle(
+    //             transform.position + Vector3.down * 0.5f,
+    //             groundCheckRadius,
+    //             groundLayer
+    //         );
+    //     }
+    // }
     private void CheckGround()
     {
         if (groundCheck != null)
         {
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+            Collider2D[] hits = Physics2D.OverlapCircleAll(
+                groundCheck.position,
+                groundCheckRadius,
+                groundLayer
+            );
+
+            isGrounded = false;
+
+            foreach (var h in hits)
+            {
+                if (h.gameObject != gameObject)
+                {
+                    isGrounded = true;
+                    break;
+                }
+            }
         }
         else
         {
-            // groundCheckが設定されていない場合自身の下方向でチェック
-            isGrounded = Physics2D.OverlapCircle(
+            Collider2D[] hits = Physics2D.OverlapCircleAll(
                 transform.position + Vector3.down * 0.5f,
                 groundCheckRadius,
                 groundLayer
             );
+
+            isGrounded = false;
+
+            foreach (var h in hits)
+            {
+                if (h.gameObject != gameObject)
+                {
+                    isGrounded = true;
+                    break;
+                }
+            }
         }
     }
 
@@ -128,7 +169,9 @@ public class PlayerController : MonoBehaviour
     private void HandleJump()
     {
         // 上キーでジャンプ（接地時のみ）
-        if (Keyboard.current != null && Keyboard.current.upArrowKey.wasPressedThisFrame && isGrounded)
+        if (Keyboard.current != null &&
+        Keyboard.current.upArrowKey.wasPressedThisFrame &&
+        isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
@@ -186,7 +229,7 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        Vector3 checkPos = groundCheck != null ? groundCheck.position : transform.position + Vector3.down * 0.5f;
+        Vector3 checkPos = groundCheck != null ? groundCheck.position : transform.position + Vector3.down * 0.8f;
         Gizmos.DrawWireSphere(checkPos, groundCheckRadius);
     }
 }
