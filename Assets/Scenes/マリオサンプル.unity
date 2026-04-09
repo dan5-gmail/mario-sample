@@ -264,7 +264,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 20
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -362,11 +362,6 @@ MonoBehaviour:
 --- !u!1 &1092120290 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7416250472715515436, guid: 4e3156232dbcea344afb5f75b620424a, type: 3}
-  m_PrefabInstance: {fileID: 3842403915397056199}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1092120293 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3298855022129639851, guid: 4e3156232dbcea344afb5f75b620424a, type: 3}
   m_PrefabInstance: {fileID: 3842403915397056199}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1093534554
@@ -543,7 +538,7 @@ Transform:
   m_GameObject: {fileID: 1206713735}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.69, y: 3.84, z: 0}
+  m_LocalPosition: {x: -0.55, y: 3.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -563,8 +558,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 5
   jumpForce: 10
-  groundCheck: {fileID: 1092120293}
-  groundCheckRadius: 0.2
+  groundCheck: {fileID: 0}
+  groundCheckRadius: 0.4
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -695,6 +690,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5805988753422034921, guid: 5554b3000d241af45b52a80cff1f7764, type: 3}
+      propertyPath: blockSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5805988753422034921, guid: 5554b3000d241af45b52a80cff1f7764, type: 3}
       propertyPath: itemPrefab
       value: 
       objectReference: {fileID: 325606144}
@@ -720,12 +719,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3298855022129639851, guid: 4e3156232dbcea344afb5f75b620424a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.77961326
+      objectReference: {fileID: 0}
+    - target: {fileID: 3298855022129639851, guid: 4e3156232dbcea344afb5f75b620424a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.79603785
+      objectReference: {fileID: 0}
+    - target: {fileID: 3298855022129639851, guid: 4e3156232dbcea344afb5f75b620424a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.866443
+      objectReference: {fileID: 0}
+    - target: {fileID: 3298855022129639851, guid: 4e3156232dbcea344afb5f75b620424a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.95
+      value: -10.91
       objectReference: {fileID: 0}
     - target: {fileID: 3298855022129639851, guid: 4e3156232dbcea344afb5f75b620424a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.47
+      value: 1.51
       objectReference: {fileID: 0}
     - target: {fileID: 3298855022129639851, guid: 4e3156232dbcea344afb5f75b620424a, type: 3}
       propertyPath: m_LocalPosition.z
