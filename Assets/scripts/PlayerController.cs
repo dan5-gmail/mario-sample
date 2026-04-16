@@ -246,6 +246,7 @@ public class PlayerController : MonoBehaviour
             {
                 GameManager.Instance.CollectItem();
             }
+            // アイテム削除
             Destroy(other.gameObject);
         }
     }
