@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 // using System.Diagnostics
@@ -32,6 +33,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float fallThreshold = -10f;
 
+    [Header("踏みつけ設定")]
+    [SerializeField]
+    private float stompBounceForce = 8f; //踏んだ後の跳ね返り力
     // コンポーネント参照
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -199,11 +203,34 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            // 敵に触れたらゲームオーバー
-            if (GameManager.Instance != null)
+
+            // 衝突点を取得して、上から踏んだのかを判定
+            // プレイやーの下端が敵の中心より上にあれば「踏んだ」
+            float playerBottom = transform.position.y -
+            GetComponent<BoxCollider2D>().bounds.extents.y;
+            float enemyCenter = collision.transform.position.y;
+
+            if (playerBottom > enemyCenter)
             {
-                GameManager.Instance.GameOver();
+                //  踏みつけ成功＆敵倒す
+                EnemyController enemy = collision.gameObject.GetComponent<EnemyController>();
+                if (enemy != null)
+                {
+                    enemy.OnStomped();
+                }
+
+                // プレイヤーが少し跳ねる
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, stompBounceForce);
             }
+            else
+            {
+                // 横から当たった場合
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.GameOver();
+                }
+            }
+
         }
     }
 

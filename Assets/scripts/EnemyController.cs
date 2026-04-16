@@ -157,4 +157,22 @@ public class EnemyController : MonoBehaviour
         float dir = Application.isPlaying ? currentDirection : (moveRight ? 1f : -1f);
         Gizmos.DrawRay(wallCheckPos, Vector3.right * dir * wallCheckDistance);
     }
+
+    // <summary>
+    // プレイヤーに踏まれたときの処理
+    // </summary>
+    public void OnStomped()
+    {
+        //  動きを停止する
+        rb.linearVelocity = Vector2.zero;
+
+        // Colliderを無効化
+        GetComponent<BoxCollider2D>().enabled = false;
+
+        // 潰れアニメーション(Y軸に縮める)
+        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 0.3f, transform.localScale.z);
+
+        // 少し待ってから削除
+        Destroy(gameObject, 0.3f);
+    }
 }
