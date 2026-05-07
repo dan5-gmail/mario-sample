@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+// using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 // using System.Diagnostics
@@ -45,13 +45,14 @@ public class PlayerController : MonoBehaviour
 
     [Header("ダブルジャンプ設定")]
     [SerializeField]
-    private int jummp = 2;
+    private int jummp;
 
     // ジャンプ回数カウント
     private int currentJumpCount = 0;
 
     void Start()
     {
+        jummp = 2;
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -78,52 +79,45 @@ public class PlayerController : MonoBehaviour
 
         // 落下判定
         CheckFall();
+
+        Debug.Log(isGrounded);
     }
 
     // / <summary>
     // / 接地判定を行う
     // / </summary>
-    // private void CheckGround()
-    // {
-    //     if (groundCheck != null)
-    //     {
-    //         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-    //     }
-    //     else
-    //     {
-    //         // groundCheckが設定されていない場合は、自身の下方向でチェック
-    //         isGrounded = Physics2D.OverlapCircle(
-    //             transform.position + Vector3.down * 0.5f,
-    //             groundCheckRadius,
-    //             groundLayer
-    //         );
-    //     }
-    // }
+
     private void CheckGround()
     {
+        bool wasGrounded = isGrounded;
+
         if (groundCheck != null)
         {
-            bool wasGrounded = isGrounded;
-
-            if (groundCheck != null)
-            {
-                isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-            }
-            else
-            {
-                isGrounded = Physics2D.OverlapCircle(
-                    transform.position + Vector3.down * 0.5f,
-                    groundCheckRadius,
-                    groundLayer);
-            }
-
-            // 着地した瞬間にジャンプ回数をリセット
-            if (!wasGrounded && isGrounded)
-            {
-                currentJumpCount = 0;
-                jummp = 2;
-            }
+            isGrounded = Physics2D.OverlapCircle(
+                groundCheck.position,
+                groundCheckRadius,
+                groundLayer
+            );
         }
+        else
+        {
+            isGrounded = Physics2D.OverlapCircle(
+                transform.position + Vector3.down * 0.5f,
+                groundCheckRadius,
+                groundLayer
+            );
+        }
+
+        // 着地した瞬間
+        if (!wasGrounded && isGrounded)
+        {
+            currentJumpCount = 0;
+        }
+
+
+
+
+
     }
 
     /// <summary>
@@ -170,6 +164,7 @@ public class PlayerController : MonoBehaviour
         Keyboard.current.upArrowKey.wasPressedThisFrame &&
         currentJumpCount < jummp)
         {
+
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             currentJumpCount++;
         }

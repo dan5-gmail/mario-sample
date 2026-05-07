@@ -94,7 +94,7 @@ public class StageBuilder : MonoBehaviour
                                 movingPlatformPrefab,
                                 position,
                                 Quaternion.identity,
-                                stageParent
+                                transform
                             );
                             // MovingPlatformコンポーネントを追加
                             // （Prefabに最初から付けてもOK）
