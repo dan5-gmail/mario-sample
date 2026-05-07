@@ -43,6 +43,13 @@ public class PlayerController : MonoBehaviour
     // 状態
     private bool isGrounded = false;
 
+    [Header("ダブルジャンプ設定")]
+    [SerializeField]
+    private int jummp = 2;
+
+    // ジャンプ回数カウント
+    private int currentJumpCount = 0;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -96,40 +103,25 @@ public class PlayerController : MonoBehaviour
     {
         if (groundCheck != null)
         {
-            Collider2D[] hits = Physics2D.OverlapCircleAll(
-                groundCheck.position,
-                groundCheckRadius,
-                groundLayer
-            );
+            bool wasGrounded = isGrounded;
 
-            isGrounded = false;
-
-            foreach (var h in hits)
+            if (groundCheck != null)
             {
-                if (h.gameObject != gameObject)
-                {
-                    isGrounded = true;
-                    break;
-                }
+                isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
             }
-        }
-        else
-        {
-            Collider2D[] hits = Physics2D.OverlapCircleAll(
-                transform.position + Vector3.down * 0.5f,
-                groundCheckRadius,
-                groundLayer
-            );
-
-            isGrounded = false;
-
-            foreach (var h in hits)
+            else
             {
-                if (h.gameObject != gameObject)
-                {
-                    isGrounded = true;
-                    break;
-                }
+                isGrounded = Physics2D.OverlapCircle(
+                    transform.position + Vector3.down * 0.5f,
+                    groundCheckRadius,
+                    groundLayer);
+            }
+
+            // 着地した瞬間にジャンプ回数をリセット
+            if (!wasGrounded && isGrounded)
+            {
+                currentJumpCount = 0;
+                jummp = 2;
             }
         }
     }
@@ -173,11 +165,13 @@ public class PlayerController : MonoBehaviour
     private void HandleJump()
     {
         // 上キーでジャンプ（接地時のみ）
+
         if (Keyboard.current != null &&
         Keyboard.current.upArrowKey.wasPressedThisFrame &&
-        isGrounded)
+        currentJumpCount < jummp)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            currentJumpCount++;
         }
     }
 

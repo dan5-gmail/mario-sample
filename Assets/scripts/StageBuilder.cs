@@ -23,6 +23,8 @@ public class StageBuilder : MonoBehaviour
     [SerializeField]
     private Vector2 stageOffset = new Vector2(-3f, -3f);  // ステージ開始位置のオフセット
 
+    [SerializeField]
+    private GameObject movingPlatformPrefab;
     // ステージデータ（0=空、1=ブロック、2=敵、3=アイテム）
     // 配列の下の行が下のY座標、左の列:左のX座標
     private int[,] stageData = new int[,]
@@ -40,7 +42,7 @@ public class StageBuilder : MonoBehaviour
         // Y=4
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0 },
         // Y=5
-        { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0 },
+        { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 4, 0, 0 },
         // Y=6
         { 0, 0, 0, 0, 3, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0 },
         // Y=7
@@ -83,6 +85,24 @@ public class StageBuilder : MonoBehaviour
                         break;
                     case 3:
                         SpawnObject(itemPrefab, position, "Items");
+                        break;
+
+                    case 4: // 動く足場
+                        if (movingPlatformPrefab != null)
+                        {
+                            GameObject platform = Instantiate(
+                                movingPlatformPrefab,
+                                position,
+                                Quaternion.identity,
+                                stageParenta
+                            );
+                            // MovingPlatformコンポーネントを追加
+                            // （Prefabに最初から付けてもOK）
+                            if (platform.GetComponent<MovingPlatform>() == null)
+                            {
+                                platform.AddComponent<MovingPlatform>();
+                            }
+                        }
                         break;
                 }
             }
