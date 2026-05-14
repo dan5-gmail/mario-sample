@@ -1,6 +1,9 @@
+// using Unity.VisualScripting;
+// using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+// using UnityEngine.SocialPlatforms.Impl;
 
 /// <summary>
 /// ゲーム全体を管理するマネージャークラス
@@ -10,6 +13,25 @@ public class GameManager : MonoBehaviour
 {
     // シングルトンインスタンス
     public static GameManager Instance { get; private set; }
+
+    [Header("スコア")]
+    [SerializeField]
+    private int ScoreItem = 100;
+
+    [SerializeField]
+    private int ScoreEnemy = 200;
+
+
+    [SerializeField]
+    private int timeBonus = 10;
+
+    [Header("タイム設定")]
+    [SerializeField]
+    private float timeLimit = 60f;
+
+    // スコアとタイマー
+    private int score = 0;
+    private float remainingTime;
 
     // ゲームの状態
     public enum GameState
@@ -29,6 +51,7 @@ public class GameManager : MonoBehaviour
     // クリアに必要なアイテム数
     [SerializeField]
     private int requiredItemCount = 3;
+
 
     void Awake()
     {
@@ -52,6 +75,19 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+
+        //  タイマー処理
+        if (CurrentState == GameState.Playing)
+        {
+            remainingTime -= Time.deltaTime;
+            if (remainingTime <= 0f)
+            {
+                remainingTime = 0f;
+                GameOver();   //時間切れ
+                return;
+            }
+        }
+
         // タイトル、ゲームオーバー、ゲームクリア画面でスペースキー入力を処理
         if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
         {
@@ -66,6 +102,7 @@ public class GameManager : MonoBehaviour
                     break;
             }
         }
+
     }
 
     /// <summary>
@@ -98,6 +135,8 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         itemCount = 0;
+        score = 0;
+        remainingTime = timeLimit;
         CurrentState = GameState.Playing;
         SceneManager.LoadScene("GameScene");
     }
@@ -136,11 +175,15 @@ public class GameManager : MonoBehaviour
     public void CollectItem()
     {
         itemCount++;
-        Debug.Log("アイテム取得: " + itemCount + " / " + requiredItemCount);
+        score += ScoreItem;  // スコア加算
+        Debug.Log("スコア: " + score +
+                  " アイテム: " + itemCount + " / " + requiredItemCount);
 
-        // クリア条件を達成したらゲームクリア
         if (itemCount >= requiredItemCount)
         {
+            // クリアボーナス: 残り時間 × timeBonus
+            int bonus = Mathf.CeilToInt(remainingTime) * timeBonus;
+            score += bonus;
             GameClear();
         }
     }
@@ -159,5 +202,29 @@ public class GameManager : MonoBehaviour
     public int GetRequiredItemCount()
     {
         return requiredItemCount;
+    }
+
+    /// <summary>
+    /// スコアを加算
+    /// </summary>
+    public void AddScore(int points)
+    {
+        score += points;
+    }
+
+    /// <summary>
+    /// 現在のスコアを取得
+    /// </summary>
+    public int GetScore()
+    {
+        return score;
+    }
+
+    /// <summary>
+    /// 残り時間を取得
+    /// </summary>
+    public float GetRemainingTime()
+    {
+        return remainingTime;
     }
 }
