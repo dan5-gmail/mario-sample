@@ -127,6 +127,13 @@ public class GameManager : MonoBehaviour
                 CurrentState = GameState.GameClear;
                 break;
         }
+
+        // タイトルならタイトルBGMを再生
+        if (sceneName == "TitleScene" &&
+            SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayBGM("title");
+        }
     }
 
     /// <summary>
@@ -138,6 +145,12 @@ public class GameManager : MonoBehaviour
         score = 0;
         remainingTime = timeLimit;
         CurrentState = GameState.Playing;
+
+        // ゲームBGMを再生
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayBGM("game");
+        }
         SceneManager.LoadScene("GameScene");
     }
 
@@ -156,6 +169,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void GameOver()
     {
+        // BGM停止 & ゲームオーバー音
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.StopBGM();
+            SoundManager.Instance.PlaySE("gameover");
+        }
         CurrentState = GameState.GameOver;
         SceneManager.LoadScene("GameOverScene");
     }
@@ -165,6 +184,13 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void GameClear()
     {
+
+        // BGM停止 & クリア音
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.StopBGM();
+            SoundManager.Instance.PlaySE("clear");
+        }
         CurrentState = GameState.GameClear;
         SceneManager.LoadScene("GameClearScene");
     }
@@ -175,6 +201,12 @@ public class GameManager : MonoBehaviour
     public void CollectItem()
     {
         itemCount++;
+
+        // アイテム取得音
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySE("item");
+        }
         score += ScoreItem;  // スコア加算
         Debug.Log("スコア: " + score +
                   " アイテム: " + itemCount + " / " + requiredItemCount);
@@ -227,4 +259,6 @@ public class GameManager : MonoBehaviour
     {
         return remainingTime;
     }
+
+
 }
